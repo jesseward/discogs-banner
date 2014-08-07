@@ -1,7 +1,7 @@
 import unittest
 import random
 
-from discogs_banner.discogs_banner import normalize_thumbs, calculate_canvas
+from discogs_banner.canvas_tools import normalize_thumbs, calculate_canvas
 
 class TestThumbRestrictions(unittest.TestCase):
 
@@ -10,7 +10,7 @@ class TestThumbRestrictions(unittest.TestCase):
               [random.randint(0,150) for r in xrange(150)])
 
     def test_thumb_length(self):
-      self.assertTrue(len(self.collection) == 119)
+      self.assertTrue(len(self.thumbs) == 119)
 
 class TestCanvasSizes(unittest.TestCase):
 

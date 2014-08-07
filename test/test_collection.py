@@ -1,6 +1,6 @@
 import unittest
 
-from discogs_banner.discogs_collection import fetch_collection
+from discogs_banner.api_tools import fetch_collection
 
 class TestDiscogsCollectionValidUser(unittest.TestCase):
 
@@ -22,6 +22,7 @@ class TestDiscogsCollectionValidUser(unittest.TestCase):
           'http://api.discogs.com/image/R-150-32251-1217277145.jpeg')
 
 class TestDiscogsCollectionInvalidUser(unittest.TestCase):
+
     def setUp(self):
       self.collection = fetch_collection('invalid-discogs-username')
 
