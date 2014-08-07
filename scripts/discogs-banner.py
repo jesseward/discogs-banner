@@ -12,9 +12,6 @@ from discogs_banner.canvas_tools import (
         create_image,
 )
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-
 def main(args, config):
 
     
@@ -27,12 +24,14 @@ def main(args, config):
 
     thumbs = normalize_thumbs(discogs_collection)
 
-    fetch_images('config', thumbs)
+    fetch_images(config, thumbs)
     h,v = calculate_canvas(thumbs)
 
     # send only the image file name to the create method
-    create_image(args, [ x[2] for x in thumbs ])
-    print h,v
+    logger.info('Creating image={image}, at {h}x{v}'.format(
+        image=args.o, h=h, v=v)) 
+    create_image(config, args, [ x[2] for x in thumbs ])
+
 
 if __name__ == "__main__":
 
@@ -53,10 +52,21 @@ if __name__ == "__main__":
 
     # apply defaults to *required* configuration values.
     config = ConfigParser.ConfigParser(defaults = {
-        'cache_direcotry': os.path.expanduser('~/.config/discogs-banner/image-cache'),
-        'log_file': '/tmp/discogs-banner.log',
+        'cache_directory': os.path.expanduser('~/.config/discogs-banner/image-cache'),
+        'log_file': os.path.expanduser('~/.config/discogs-banner/discogs-banner.log'),
         'auth_token': os.path.expanduser('~/.config/discogs-banner/token'),
       })
+
     config.read(args.c)
+
+    FORMAT = '%(asctime)-15s [%(process)d] [%(name)s %(funcName)s] [%(levelname)s] %(message)s'
+    logging.basicConfig(filename=config.get('discogs-banner',
+      'log_file'), format=FORMAT, level=logging.ERROR)
+    logger = logging.getLogger('main')
+
+    if not os.path.exists(config.get('discogs-banner', 'cache_directory')):
+        logger.warn('Cache directory not found. Creating {cache_dir}'.format(
+            cache_dir=config.get('discogs-banner', 'cache_directory')))
+        os.mkdir(config.get('discogs-banner', 'cache_directory'))
     
     m = main(args, config)

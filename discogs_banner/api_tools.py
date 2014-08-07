@@ -13,24 +13,28 @@ USER_AGENT = 'discogs-banner'
 def fetch_images(config, images):
 
     logger = logging.getLogger(__name__)
-    discogs_auth = DiscogsAuth()
+    discogs_auth = DiscogsAuth(config)
 
     for image in images:
 
-        image_file_name = os.path.join('/home/jesse/scratch',
-                os.path.basename(image[2]))
+        image_file_name = os.path.join(
+                    config.get('discogs-banner', 'cache_directory'),
+                    os.path.basename(image[2])
+                )
+
+        # if the file exists, do not overwrite and do not download
+        if os.path.isfile(image_file_name):
+            logger.info('skipping file={file_name}, already exists in cache.'.format(
+                file_name=image_file_name))
+            continue
+
+        # limit to 1 QPS to discogs API.
         time.sleep(1)
 
         resp, content = discogs_auth.handle.request(image[2], 'POST',
             headers={'user-agent': USER_AGENT })
 
         if resp['status'] == '200':
-
-            if os.path.isfile(image_file_name):
-                logger.info('skipping file={file_name}, already exists in cache.'.format(
-                    file_name=image_file_name))
-                continue
-
             logger.debug('Downloading image. release-id={release},url={url}'.format(
             release=image[0], url=image[2]))
             with open(image_file_name, 'w') as file_handle:
@@ -50,6 +54,8 @@ def fetch_collection(user):
     url = COLLECTION_BASE.format(user=user, page=page, count=count)
     collection = []
 
+    # call the users collection URL until we've read the entire JSON
+    # response. 
     while next_page is True:
         try:
             logger.info('fetching url={url}'.format(url=url))
@@ -70,6 +76,7 @@ def fetch_collection(user):
             # ignore default "spacer" images.
             if 'spacer.gif' in release['basic_information']['thumb']: continue
 
+            # create a list datastructure for our results.
             collection.append(
                     [release['basic_information']['id'], 
                         release['basic_information']['resource_url'],

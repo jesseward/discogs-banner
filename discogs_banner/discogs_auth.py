@@ -16,13 +16,9 @@ class DiscogsAuth(object):
     authorize_url = 'http://www.discogs.com/oauth/authorize'
     access_token_url = 'http://api.discogs.com/oauth/access_token'
 
-    def __init__(self):
+    def __init__(self, config):
 
-        user = os.getenv("USER")
-        if os.getenv("SUDO_USER") is not None:
-            user = os.getenv("SUDO_USER")
-
-        self.token_file = os.path.expanduser('~{0}/.config/discogs-banner/token'.format(user))
+        self.token_file = os.path.expanduser(config.get('discogs-banner', 'auth_token'))
 
         self.consumer = oauth.Consumer(self.consumer_key, self.consumer_secret)
 

@@ -46,7 +46,7 @@ def normalize_thumbs(thumbs, max_thumbs=119):
 
     return thumbs
 
-def create_image(args, thumbs):
+def create_image(config, args, thumbs):
 
     horizontal, vertical = calculate_canvas(thumbs)
     # create a blank image canvas
@@ -69,7 +69,8 @@ def create_image(args, thumbs):
             try:
                 thumb = Image.open(
                     os.path.join(
-                        '/home/jesse/scratch/', image_file)
+                        config.get('discogs-banner', 'cache_directory'),
+                        image_file)
                 )
             except IOError:
                 logger.error('Unable to open file {image}'.format(image=
@@ -81,25 +82,3 @@ def create_image(args, thumbs):
             new_image.paste(thumb, (i, j))
 
     new_image.save(args.o, "JPEG")
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Create Discogs image banner.')
-    parser.add_argument('user', type=str)
-    parser.add_argument('-o', default='disogs-banner.jpg')
-
-    args = parser.parse_args()
-
-    coll = fetch_collection(args.user)
-
-    # collection is 0 size . 
-    if len(coll) == 0 : sys.exit('bail')
-
-    thumbs = normalize_thumbs(coll)
-    print len(thumbs)
-    fetch_images('config', thumbs)
-    h,v = calculate_canvas(thumbs)
-    # send on;ly the image file name to the create method
-    create(args, [ x[2] for x in thumbs ])
-    print h,v
-
