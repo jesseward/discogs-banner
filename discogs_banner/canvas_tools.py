@@ -8,7 +8,7 @@ from os.path import isfile, join
 from PIL import Image
 import logging
 
-from discogs_banner.discogs_collection import fetch_collection, fetch_images
+from discogs_banner.api_tools import fetch_collection, fetch_images
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -46,7 +46,7 @@ def normalize_thumbs(thumbs, max_thumbs=119):
 
     return thumbs
 
-def create(args, thumbs):
+def create_image(args, thumbs):
 
     horizontal, vertical = calculate_canvas(thumbs)
     # create a blank image canvas

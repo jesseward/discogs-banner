@@ -4,7 +4,7 @@ import logging
 import time
 import os
 
-from discogs_auth import DiscogsAuth
+from discogs_banner.discogs_auth import DiscogsAuth
 
 COLLECTION_BASE = 'http://api.discogs.com/users/{user}/collection/folders/0/releases?page={page}&per_page={count}'
 USER_AGENT = 'discogs-banner'
