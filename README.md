@@ -1,4 +1,4 @@
 discogs-banner
 ==============
 
-Creates an banner from the album thumbnails in your Discogs collection.
+Creates an image banner from the album thumbnails in your Discogs collection.
