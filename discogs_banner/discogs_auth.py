@@ -9,8 +9,6 @@ class DiscogsAuth(object):
     ''' Returns an OAuth authentication handle for requests against the
         Discogs API. '''
 
-    consumer_key = 'ksVetEMWkfaVmiJYlcPx'
-    consumer_secret = 'TxceKmGYDoTshimvywXmxJoEIffgVzgr'
 
     request_token_url = 'http://api.discogs.com/oauth/request_token'
     authorize_url = 'http://www.discogs.com/oauth/authorize'
@@ -20,6 +18,8 @@ class DiscogsAuth(object):
 
         self.token_file = os.path.expanduser(config.get('discogs-banner', 'auth_token'))
 
+        self.consumer_key = config.get('discogs-auth', 'consumer_key')
+        self.consumer_secret = config.get('discogs-auth', 'consumer_secret')
         self.consumer = oauth.Consumer(self.consumer_key, self.consumer_secret)
 
         if not self.is_authenticated:
