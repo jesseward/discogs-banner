@@ -46,7 +46,7 @@ def normalize_thumbs(thumbs, max_thumbs=119):
 
     return thumbs
 
-def create_image(config, args, thumbs):
+def create_image(config, image_name, thumbs):
 
     horizontal, vertical = calculate_canvas(thumbs)
     # create a blank image canvas
@@ -81,4 +81,4 @@ def create_image(config, args, thumbs):
             # paste the thumb into the image canvas
             new_image.paste(thumb, (i, j))
 
-    new_image.save(args.o, "JPEG")
+    new_image.save(image_name, "JPEG")

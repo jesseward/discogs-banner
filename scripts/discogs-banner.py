@@ -30,7 +30,7 @@ def main(args, config):
     # send only the image file name to the create method
     logger.info('Creating image={image}, at {h}x{v}'.format(
         image=args.o, h=h, v=v)) 
-    create_image(config, args, [ x[2] for x in thumbs ])
+    create_image(config, args.o, [ x[2] for x in thumbs ])
 
 
 if __name__ == "__main__":
