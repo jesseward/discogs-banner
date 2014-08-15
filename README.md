@@ -50,7 +50,26 @@ Run the script
 ```
 python discogs-banner.py DISCOGS-USER-NAME-HERE
 ```
-The default settings will drop discogs-banner.jpg in your current working path.
+The default settings will drop a 16x9 discogs-banner.jpg in your current working path.
+
+Run-time command line options.
+```
+$ discogs-banner.py --help
+usage: discogs-banner.py [-h] [-r R] [-o O] [-c C] user
+
+Create image banner from Discogs album thumbs. Requires your Discogs
+collection to be populated (and public)
+
+positional arguments:
+  user        Target Discogs account name
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -r R        Aspect ratio for output image. Options are: 16x9, 2x1, 4x3
+  -o O        Output filename for rendered image.
+  -c C        Specify an optional configuration file path.
+
+```
 
 Sample
 ======
