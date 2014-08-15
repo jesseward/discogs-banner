@@ -7,6 +7,7 @@ import ConfigParser
 
 from discogs_banner.api_tools import fetch_collection, fetch_images
 from discogs_banner.canvas_tools import (
+        ASPECT,
         normalize_thumbs,
         calculate_canvas,
         create_image,
@@ -25,18 +26,22 @@ def main(args, config):
     thumbs = normalize_thumbs(discogs_collection)
 
     fetch_images(config, thumbs)
-    h,v = calculate_canvas(thumbs)
+    h,v = calculate_canvas(thumbs, aspect=args.r)
 
     # send only the image file name to the create method
     logger.info('Creating image={image}, at {h}x{v}'.format(
         image=args.o, h=h, v=v)) 
-    create_image(config, args.o, [ x[2] for x in thumbs ])
+    create_image(config, args.o, [ x[2] for x in thumbs ], horizontal=h,
+            vertical=v)
 
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Create image banner from Discogs album thumbs. Requires your Discogs collection to be populated (and public)')
     parser.add_argument('user', type=str, help='Target Discogs account name')
+    parser.add_argument('-r', default='16x9',
+        help='Aspect ratio for output image. Options are: {ratios}'.format(ratios=
+            ', '.join([ r for r in ASPECT ])))
     parser.add_argument('-o', default='discogs-banner.jpg',
         help='Output filename for rendered image.')
     parser.add_argument('-c', default=

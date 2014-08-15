@@ -17,11 +17,22 @@ logger = logging.getLogger(__name__)
 THUMB_WIDTH = 100
 THUMB_LENGTH = 100
 
-def calculate_canvas(thumbs):
+ASPECT = {
+    '16x9': (1.77, 0.56),
+    '4x3': (1.33, 0.75),
+    '2x1': (2.00, 0.50),
+}
 
-    # default to a 2:1 image ratio
-    horizontal = 2.0
-    vertical = 0.50
+
+def calculate_canvas(thumbs, aspect='16x9'):
+
+    try:
+        horizontal = ASPECT[aspect][0]
+        vertical = ASPECT[aspect][1]
+    except KeyError:
+        logger.error('Invalid aspect ration specified.')
+        return None
+
     # our total number of pixels
     pixels = THUMB_WIDTH*THUMB_LENGTH*len(thumbs)
 
@@ -46,9 +57,8 @@ def normalize_thumbs(thumbs, max_thumbs=119):
 
     return thumbs
 
-def create_image(config, image_name, thumbs):
+def create_image(config, image_name, thumbs, horizontal=1024, vertical=576):
 
-    horizontal, vertical = calculate_canvas(thumbs)
     # create a blank image canvas
     new_image = Image.new('RGB', (horizontal, vertical))
    
