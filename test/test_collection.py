@@ -1,6 +1,10 @@
 import unittest
+import logging
 
 from discogs_banner.api_tools import fetch_collection
+
+logger = logging.getLogger(__name__)
+logging.disable(logging.CRITICAL)
 
 class TestDiscogsCollectionValidUser(unittest.TestCase):
 

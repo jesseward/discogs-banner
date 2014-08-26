@@ -30,8 +30,9 @@ def calculate_canvas(thumbs, aspect='16x9'):
         horizontal = ASPECT[aspect][0]
         vertical = ASPECT[aspect][1]
     except KeyError:
-        logger.error('Invalid aspect ration specified.')
-        return None
+        logger.error('Invalid aspect ratio specified. aspect={ratio}'.format(
+            ratio=aspect))
+        return (None, None)
 
     # our total number of pixels
     pixels = THUMB_WIDTH*THUMB_LENGTH*len(thumbs)

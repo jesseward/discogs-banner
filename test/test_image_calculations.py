@@ -1,7 +1,11 @@
 import unittest
 import random
+import logging
 
 from discogs_banner.canvas_tools import normalize_thumbs, calculate_canvas
+
+logger = logging.getLogger(__name__)
+logging.disable(logging.CRITICAL)
 
 class TestThumbRestrictions(unittest.TestCase):
 
@@ -23,6 +27,8 @@ class TestCanvasSizes(unittest.TestCase):
                 [random.randint(0,50) for r in xrange(50)], aspect='4x3')
         self.sixteenbynine = calculate_canvas(
                 [random.randint(0,50) for r in xrange(50)], aspect='16x9')
+        self.invalidratio = calculate_canvas(
+                [random.randint(0,50) for r in xrange(50)], aspect='1x1')
 
     def test_horizontal_size_2x1(self):
         self.assertTrue(self.twobyone[0] == 1000)
@@ -41,6 +47,12 @@ class TestCanvasSizes(unittest.TestCase):
 
     def test_vertical_size_16x9(self):
         self.assertTrue(self.sixteenbynine[1] == 500)
+
+    def test_invalid_horizontal(self):
+        self.assertTrue(self.invalidratio[0] == None)
+
+    def test_invalid_verical(self):
+        self.assertTrue(self.invalidratio[1] == None)
 
 if __name__ == '__main__':
     unittest.main()

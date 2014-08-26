@@ -28,6 +28,10 @@ def main(args, config):
     fetch_images(config, thumbs)
     h,v = calculate_canvas(thumbs, aspect=args.r)
 
+    if not h or not v:
+        logger.error('unable to cacluate image canvas size.')
+        sys.exit(1)
+
     # send only the image file name to the create method
     logger.info('Creating image={image}, at {h}x{v}'.format(
         image=args.o, h=h, v=v)) 
