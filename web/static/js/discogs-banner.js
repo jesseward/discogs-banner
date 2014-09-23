@@ -26,7 +26,7 @@ $('.navbar-collapse ul li a').click(function() {
 function createImage(userName){
     $.ajax({
        type: "GET",
-       url: "http://radio.rrampt.com/api/create/" + userName,
+       url: "http://api.discogs-collage.housejunkie.ca/api/v1/create/" + userName + "/",
        success: function(msg){
          alert( "Data Saved: " + msg );
        }
@@ -37,7 +37,7 @@ function pollTaskId(taskId, userName) {
 
     $.ajax({
         type: "GET",
-        url: "http://rradio.rrampt.com/api/status/" + userName + "/" +taskId ,
+        url: "http://api.discogs-collage.housejunkie.ca/api/v1/status/" + userName + "/" +taskId + "/",
         success: function(msg) {
             if ( msg.result == "SUCCESS" ){
                 alert( "job is finished." );
