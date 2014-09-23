@@ -90,9 +90,9 @@ def api_check_status(user_id, task_id):
     return Response(res.render, res.mimetype)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
     logging.basicConfig(format=FORMAT)
     logger.setLevel(logging.DEBUG)
-    port = int(environ.get("PORT", 5000))
+    port = int(environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
