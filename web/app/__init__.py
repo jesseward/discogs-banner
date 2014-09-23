@@ -4,7 +4,7 @@ from flask import Flask, Response, abort, request, session
 from celery.result import AsyncResult
 import logging
 
-from utils import is_valid_username
+from utils import is_valid_username, crossdomain
 from tasks import fetch_and_generate
 
 app = Flask(__name__)
@@ -31,7 +31,8 @@ class Result(object):
         return json.dumps(res)
 
 
-@app.route("/api/v1/create/<user_id>/")
+@app.route("/api/v1/create/<user_id>/", methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*')
 def api_create_collage(user_id):
     ''' end-point that kicks off the collage creation process. A user_id is received, which
         if valid a celery job is created to perform the long running task.
@@ -57,7 +58,8 @@ def api_create_collage(user_id):
     return Response(res.render, res.mimetype)
 
 @app.route("/api/v1/status/<user_id>/<task_id>")
-def api_check_status(user_id, task_id):
+@crossdomain(origin='*')
+def api_check_status(user_id, task_id, methods=['GET', 'OPTIONS']):
     ''' polls the celery queue given the input of a task_id . Returns the status of the
         requested task_id.
 
