@@ -73,8 +73,9 @@ def fetch_collection(user):
 
         for release in response['releases']:
 
-            # ignore default "spacer" images.
-            if 'spacer.gif' in release['basic_information']['thumb']: continue
+            # ignore default "spacer" images, or an empty string..
+            if release['basic_information']['thumb'] in ('spacer.gif', ''):
+                continue
 
             # create a list datastructure for our results.
             collection.append(
