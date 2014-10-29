@@ -9,6 +9,9 @@ from tasks import fetch_and_generate
 
 app = Flask(__name__)
 logger = logging.getLogger(__name__)
+FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
+logging.basicConfig(format=FORMAT)
+logger.setLevel(logging.DEBUG)
 
 class Result(object):
     ''' utility class to build a json object containing the error or success states
@@ -93,8 +96,5 @@ def api_check_status(user_id, task_id, methods=['GET', 'OPTIONS']):
 
 
 if __name__ == '__main__':
-    FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
-    logging.basicConfig(format=FORMAT)
-    logger.setLevel(logging.DEBUG)
     port = int(environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
