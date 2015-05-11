@@ -16,7 +16,7 @@ from discogs_banner.canvas_tools import (
 def main(args, config):
 
     
-    discogs_collection = fetch_collection(args.user)
+    discogs_collection = fetch_collection(config, args.user)
 
     # collection is 0 size . 
     if len(discogs_collection) == 0 :

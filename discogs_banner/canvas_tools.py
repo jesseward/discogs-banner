@@ -84,8 +84,8 @@ def create_image(config, image_name, thumbs, horizontal=1024, vertical=576):
                         image_file)
                 )
             except IOError:
-                logger.error('Unable to open file {image}'.format(image=
-                    image_file))
+                logger.error('Unable to open file {image}, skipping.'.format(
+                    image=image_file))
                 continue
             thumb.thumbnail((THUMB_WIDTH, THUMB_WIDTH), Image.ANTIALIAS)
 

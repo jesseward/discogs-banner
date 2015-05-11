@@ -2,7 +2,7 @@ import os
 from distutils.core import setup
 
 NAME = 'discogs-banner'
-VERSION = '0.0.1'
+VERSION = '2.0.0'
 
 setup(
     name = NAME,
