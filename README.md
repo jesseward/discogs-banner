@@ -1,6 +1,8 @@
 discogs-banner
 ==============
 
+[![Build Status](https://api.travis-ci.org/jesseward/discogs-banner.svg?branch=master)](https://api.travis-ci.org/jesseward/discogs-banner)
+
 Creates an image banner from the album thumbnails in your Discogs collection.
 
 Note that Discogs imposes a rate and request limit on their image request API. Calls to fetch an image require your request to be wrapped in OAuth1.0. I have included a key and secret in this script to get things running quickly. Though you should request your own from the discogs site, to ensure you're not sharing your quota against the key-pair provided here. If you receive errors while fetching images (HTTP error 403), you've likely reached the 1000 per day limit.
