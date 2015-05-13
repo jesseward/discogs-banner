@@ -5,4 +5,4 @@ python:
 install:
     pip install .
 script:
-    - cd tests && python test_collection.py
+    - cd tests && python test_image_caculations.py
