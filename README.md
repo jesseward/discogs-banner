@@ -18,7 +18,7 @@ Install deps
 cd discogs-banner
 virtualenv ~/.virtualenvs/discogs-banner
 source ~/.virtualenvs/discogs-banner/bin/activate
-pip install -r requirements.txt # note PIL may be present in your distros packaging system##
+pip install -r requirements.txt
 python setup.py install
 ```
 
