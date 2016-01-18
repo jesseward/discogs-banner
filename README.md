@@ -50,7 +50,7 @@ consumer_secret=TxceKmGYDoTshimvywXmxJoEIffgVzgr
 
 Run the script
 ```
-python discogs-banner.py DISCOGS-USER-NAME-HERE
+discogs-banner.py DISCOGS-USER-NAME-HERE
 ```
 The default settings will drop a 16x9 discogs-banner.jpg in your current working path.
 
