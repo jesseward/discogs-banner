@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import os
+
 import discogs_client as dc
 
 USER_AGENT = "discogs-banner +http://github.com/jesseward"
 
 
-class DiscogsWrapper(object):
+class DiscogsWrapper:
     """
     Returns an OAuth authentication handle for requests against the
     Discogs API.
@@ -13,17 +14,20 @@ class DiscogsWrapper(object):
 
     def __init__(self, config):
 
-        self.token_file = os.path.expanduser(config.get('discogs-banner',
-            'auth_token'))
+        self.token_file = os.path.expanduser(config.get("discogs-banner", "auth_token"))
 
-        self.consumer_key = config.get('discogs-auth', 'consumer_key')
-        self.consumer_secret = config.get('discogs-auth', 'consumer_secret')
+        self.consumer_key = config.get("discogs-auth", "consumer_key")
+        self.consumer_secret = config.get("discogs-auth", "consumer_secret")
 
         if self.is_authenticated:
             token, secret = self._get_access_token()
-            self.discogs = dc.Client(USER_AGENT, consumer_key=self.consumer_key,
-                    consumer_secret=self.consumer_secret, token=token,
-                    secret=secret)
+            self.discogs = dc.Client(
+                USER_AGENT,
+                consumer_key=self.consumer_key,
+                consumer_secret=self.consumer_secret,
+                token=token,
+                secret=secret,
+            )
         # otherwise handle authentication process.
         else:
             self.discogs = dc.Client(USER_AGENT)
@@ -40,42 +44,49 @@ class DiscogsWrapper(object):
 
         auth = False
 
-        while auth == False:
-            print '=== ACTION REQUIRED ==='
-            print 'In order to fetch images from discogs, you\'re required to grant the discogs-banner application access to perform actions on behalf of your discogs account.'
-            print 'Please visit {url} and accept the authentication request'.format(
-                   url=url)
+        while not auth:
+            print("=== ACTION REQUIRED ===")
+            print(
+                "In order to fetch images from discogs, you're required to grant the discogs-banner application access to perform actions on behalf of your discogs account."
+            )
+            print(
+                "Please visit {url} and accept the authentication request".format(
+                    url=url
+                )
+            )
 
-            verification_code = raw_input('Verification code :').decode('utf8')
+            verification_code = input("Verification code :").decode("utf8")
 
             try:
                 access_token, access_secret = self.discogs.get_access_token(
-                        verification_code)
+                    verification_code
+                )
             except HTTPError:
-                print 'Unable to authenticate.'
+                print("Unable to authenticate.")
                 raise
 
             if access_token:
                 auth = True
 
         # persist token to disk.
-        with open(self.token_file, 'w') as fh:
-            fh.write('{token}||{secret}'.format(token=access_token, secret=
-                    access_secret))
+        with open(self.token_file, "w") as fh:
+            fh.write(
+                "{token}||{secret}".format(token=access_token, secret=access_secret)
+            )
 
     def _get_access_token(self):
         """
         :return: two strings str a = auth token, str b = auth token secret
         """
 
-        with open(self.token_file, 'r') as fh:
-            token, secret = fh.read().split('||')
+        with open(self.token_file, "r") as fh:
+            token, secret = fh.read().split("||")
 
-        return token.decode('utf8'), secret.decode('utf8')
+        return token.decode("utf8"), secret.decode("utf8")
 
     @property
     def is_authenticated(self):
-        """ return True is a token exists on the local file system. """
+        """return True is a token exists on the local file system."""
 
         # very rudimentary check. Simply ensures the file exists on the local
         # disk.
