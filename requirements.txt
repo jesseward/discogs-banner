@@ -1,2 +1,4 @@
-Pillow>=2.6.1
+Pillow
 discogs_client
+requests
+black
